@@ -81,7 +81,7 @@ public class MovieEndpoint {
         UpdateMovieResponse response = new UpdateMovieResponse();
         ServiceStatus serviceStatus = new ServiceStatus();
 
-        Movie movieFromDB = movieService.getMovieByTitile(request.getTitle());
+        Movie movieFromDB = movieService.getMovieByTitle(request.getTitle());
 
         if (movieFromDB == null) {
             serviceStatus.setStatusCode("NOT FOUND");
