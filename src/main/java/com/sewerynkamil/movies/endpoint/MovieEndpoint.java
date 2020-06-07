@@ -64,7 +64,7 @@ public class MovieEndpoint {
             serviceStatus.setStatusCode("CONFLICT");
             serviceStatus.setMessage("Exception while adding new movie");
         } else {
-            BeanUtils.copyProperties(savedMovie, newMovie);
+            BeanUtils.copyProperties(savedMovie, newMovieType);
             serviceStatus.setStatusCode("SUCCESS");
             serviceStatus.setMessage("Content added successfully");
         }
