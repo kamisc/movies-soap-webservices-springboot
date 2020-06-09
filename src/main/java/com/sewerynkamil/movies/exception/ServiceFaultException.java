@@ -2,15 +2,15 @@ package com.sewerynkamil.movies.exception;
 
 import com.sewerynkamil.movies.movie.ServiceStatus;
 
-public class ServiceStatusFaultException extends RuntimeException {
+public class ServiceFaultException extends RuntimeException {
     private ServiceStatus serviceStatus;
 
-    public ServiceStatusFaultException(String message, ServiceStatus serviceStatus) {
+    public ServiceFaultException(String message, ServiceStatus serviceStatus) {
         super(message);
         this.serviceStatus = serviceStatus;
     }
 
-    public ServiceStatusFaultException(String message, Throwable e, ServiceStatus serviceStatus) {
+    public ServiceFaultException(String message, Throwable e, ServiceStatus serviceStatus) {
         super(message, e);
         this.serviceStatus = serviceStatus;
     }
