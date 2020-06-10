@@ -1,6 +1,7 @@
 package com.sewerynkamil.movies.endpoint;
 
 import com.sewerynkamil.movies.domain.Movie;
+import com.sewerynkamil.movies.exception.MovieNotFoundException;
 import com.sewerynkamil.movies.movie.*;
 import com.sewerynkamil.movies.service.MovieService;
 import org.springframework.beans.BeanUtils;
@@ -26,10 +27,15 @@ public class MovieEndpoint {
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getMovieByIdRequest")
     @ResponsePayload
-    public GetMovieByIdResponse getMovieById(@RequestPayload GetMovieByIdRequest request) {
+    public GetMovieByIdResponse getMovieById(@RequestPayload GetMovieByIdRequest request) throws MovieNotFoundException {
         GetMovieByIdResponse response = new GetMovieByIdResponse();
         Movie movie = movieService.getMovieById(request.getMovieId());
         MovieType movieType = new MovieType();
+
+        if (movie == null) {
+            throw new MovieNotFoundException("Invalid movie id " + request.getMovieId());
+        }
+
         BeanUtils.copyProperties(movie, movieType);
         response.setMovieType(movieType);
         return response;
@@ -104,6 +110,7 @@ public class MovieEndpoint {
         response.setServiceStatus(serviceStatus);
         return response;
     }
+
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "deleteMovieRequest")
     @ResponsePayload

@@ -18,7 +18,7 @@ public class MovieService {
     }
 
     public Movie getMovieById(Long id) {
-        return movieRepository.findById(id).get();
+        return movieRepository.findById(id).orElse(null);
     }
 
     public Movie getMovieByTitle(String title) {
