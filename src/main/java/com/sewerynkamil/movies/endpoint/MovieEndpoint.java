@@ -2,6 +2,7 @@ package com.sewerynkamil.movies.endpoint;
 
 import com.sewerynkamil.movies.domain.Movie;
 import com.sewerynkamil.movies.exception.MovieNotFoundException;
+import com.sewerynkamil.movies.exception.ServiceFaultException;
 import com.sewerynkamil.movies.movie.*;
 import com.sewerynkamil.movies.service.MovieService;
 import org.springframework.beans.BeanUtils;
@@ -115,14 +116,18 @@ public class MovieEndpoint {
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "deleteMovieRequest")
     @ResponsePayload
     public DeleteMovieResponse deleteMovie(@RequestPayload DeleteMovieRequest request) {
+
         DeleteMovieResponse response = new DeleteMovieResponse();
         ServiceStatus serviceStatus = new ServiceStatus();
 
         boolean flag = movieService.deleteMovieById(request.getMovieId());
 
         if (!flag) {
-            serviceStatus.setStatusCode("FAIL");
-            serviceStatus.setMessage("Exception while deleting movie id = " + request.getMovieId());
+            String errorMessage = "ERROR";
+            serviceStatus.setStatusCode("NOT_FOUND");
+            serviceStatus.setMessage("Movie with id: " + request.getMovieId() + " not found. Cannot delete Movie");
+
+            throw new ServiceFaultException(errorMessage, serviceStatus);
         } else {
             serviceStatus.setStatusCode("SUCCESS");
             serviceStatus.setMessage("Content deleted successfully");
